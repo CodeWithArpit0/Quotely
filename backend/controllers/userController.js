@@ -72,9 +72,9 @@ const loginUser = async (req, res) => {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "None",
         maxAge: 60 * 60 * 1000,
-        domain: ".quotely-one.vercel.app",
+        domain: ".vercel.app",
       });
 
       res.status(200).json({
