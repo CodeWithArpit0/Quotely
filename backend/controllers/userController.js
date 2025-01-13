@@ -74,7 +74,7 @@ const loginUser = async (req, res) => {
         secure: true,
         sameSite: "None",
         maxAge: 60 * 60 * 1000,
-        domain: ".vercel.app",
+        domain: "quotely-one.vercel.app",
       });
 
       res.status(200).json({
