@@ -12,7 +12,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
   },
 });
 
@@ -22,7 +22,7 @@ connectDB();
 // Middleware
 app.use(helmet());
 const corsOptions = {
-  origin: "http://localhost:5173", // Frontend URL (Update if different)
+  origin: process.env.CLIENT_URL || "http://localhost:5173", // Frontend URL (Update if different)
   credentials: true, // Allow sending cookies with requests
 };
 app.use(cors(corsOptions));
