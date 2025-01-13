@@ -7,9 +7,6 @@ const generateToken = (id) => {
   });
 };
 
-// @desc    Register new user
-// @route   POST /api/users
-// @access  Public
 const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -22,7 +19,6 @@ const registerUser = async (req, res) => {
     if (!password)
       return res.status(401).json({ message: "Password is required" });
 
-    // Check if user exists
     const username = firstName + " " + lastName;
     const userExists = await User.findOne({
       $or: [{ email }, { username }],
@@ -32,11 +28,10 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: "User already exists" });
     }
 
-    // Create user
     const user = await User.create({
       username,
       email,
-      password, // Password will be hashed by the pre-save middleware
+      password,
     });
 
     if (user) {
@@ -49,9 +44,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate user
-// @route   POST /api/users/login
-// @access  Public
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,10 +69,10 @@ const loginUser = async (req, res) => {
     } else {
       const accessToken = generateToken(user._id);
       res.cookie("accessToken", accessToken, {
-        httpOnly: true, // Prevents JavaScript access
-        secure: true, // Ensures cookie is only sent over HTTPS
-        sameSite: "strict", // CSRF protection
-        maxAge: 60 * 60 * 1000, // 1 hour
+        httpOnly: true, 
+        secure: true,
+        sameSite: "strict",
+        maxAge: 60 * 60 * 1000,
       });
 
       res.status(200).json({
@@ -96,16 +88,13 @@ const loginUser = async (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie('accessToken', {
-    httpOnly: true,  // Makes sure it's HttpOnly
-    secure: process.env.NODE_ENV === 'production', // Secure cookie for HTTPS in production
-    sameSite: 'strict',  // Prevents cross-site requests
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
   });
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
 const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -115,14 +104,10 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
 const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    // Check if email is being updated and is unique
     if (req.body.email && req.body.email !== user.email) {
       const emailExists = await User.findOne({ email: req.body.email });
       if (emailExists) {
@@ -145,9 +130,6 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
-// @desc    Change password
-// @route   PUT /api/users/change-password
-// @access  Private
 const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -158,27 +140,24 @@ const changePassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check current password
     const isMatch = await user.matchPassword(currentPassword);
 
     if (!isMatch) {
       return res.status(404).json({ message: "Current password is incorrect" });
     }
 
-    // Validate new password
     if (newPassword.length < 6) {
       return res
         .status(400)
         .json({ message: "Password must be at least 6 characters long" });
     }
 
-    // Update password
-    user.password = newPassword; // Will be hashed by pre-save middleware
+    user.password = newPassword;
     await user.save();
 
     res.status(200).json({
       message: "Password updated successfully",
-      token: generateToken(user._id), // Provide new token after password change
+      token: generateToken(user._id),
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });

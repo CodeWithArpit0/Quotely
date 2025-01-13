@@ -82,22 +82,12 @@ export default function Notes() {
           </div>
 
           <div className="sm:p-4 relative">
-            {/* Masonry Grid */}
-            <div
-              style={{
-                // columnCount: 4,
-                columnGap: "1rem",
-                // maxWidth: "1200px",
-                // margin: "0 auto",
-              }}
-              className="w-full max-w-[1200px] mx-auto sm:columns-2 md:columns-3 lg:columns-4"
-            >
+            <div className="w-full max-w-[1200px] mx-auto sm:columns-2 md:columns-3 lg:columns-4">
               {notes.map((note) => (
                 <Note key={note._id} note={note} handler={handleNoteClick} />
               ))}
             </div>
 
-            {/* Modal Overlay */}
             {isModalOpen && state.selectedNote && (
               <NoteModel
                 note={state}

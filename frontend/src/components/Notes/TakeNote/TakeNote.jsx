@@ -166,7 +166,6 @@ const TakeNote = () => {
       >
         {isExpanded ? (
           <div className="p-4">
-            {/* Title input */}
             <input
               type="text"
               id="title"
@@ -179,7 +178,6 @@ const TakeNote = () => {
               }`}
             />
 
-            {/* Note input */}
             <textarea
               id="content"
               name="content"
@@ -203,7 +201,6 @@ const TakeNote = () => {
               errorType="category"
             />
 
-            {/* Action buttons */}
             <div className="flex flex-col gap-y-3 sm:gap-0 grow sm:flex-row items-center sm:justify-between mt-2">
               <div className="w-full flex items-center space-x-2">
                 <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">

@@ -43,12 +43,17 @@ export default function Login() {
 
   const loginUserAPI = useMutation({
     mutationFn: (payload) => login(payload),
-    onSuccess: () => handleLoginSuccess(),
+    onSuccess: (data) => handleLoginSuccess(data),
     onError: (error) => handleLoginError(error),
   });
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (data) => {
     setIsLoggedIn(true);
     setItem("isLoggedIn", true);
+    const user = {
+      username: data.username,
+      email: data.email,
+    };
+    setItem("user", user);
   };
   const handleLoginError = (error) => {
     console.log("ERROR : ", error);

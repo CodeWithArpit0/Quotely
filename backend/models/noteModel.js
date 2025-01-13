@@ -24,7 +24,6 @@ const noteSchema = new mongoose.Schema(
   }
 );
 
-// Create index for search functionality
 noteSchema.index({ title: "text", content: "text" });
 
 module.exports = mongoose.model("Note", noteSchema);

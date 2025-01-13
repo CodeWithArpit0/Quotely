@@ -22,15 +22,14 @@ connectDB();
 // Middleware
 app.use(helmet());
 const corsOptions = {
-  origin: process.env.CLIENT_URL || "http://localhost:5173", // Frontend URL (Update if different)
-  credentials: true, // Allow sending cookies with requests
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  credentials: true,
 };
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Socket.io connection handling
 io.on("connection", (socket) => {
   console.log("Client connected");
 

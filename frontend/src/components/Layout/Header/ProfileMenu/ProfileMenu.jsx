@@ -19,7 +19,7 @@ import { removeItem } from "../../../../utils/localStorage";
 export default function ProfileMenu() {
   const navigate = useNavigate();
 
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, user } = useAuth();
   const menuRef = useRef();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,25 +55,32 @@ export default function ProfileMenu() {
   };
   const handleLogout = () => logoutUserAPI.mutate();
 
+  function getAvatarInitials(name) {
+    if (!name) return "";
+    const parts = name.trim().split(" ");
+    const initials = parts.map((part) => part[0].toUpperCase()).join("");
+    return initials;
+  }
   return (
     <div className="relative inline-block">
-      {/* Avatar Button */}
-      <Avatar label="AS" handler={toggleMenu} />
+      <Avatar
+        label={user && user.username ? getAvatarInitials(user.username) : "US"}
+        handler={toggleMenu}
+      />
 
-      {/* Dropdown Menu */}
       {isMenuOpen && (
         <div
           ref={menuRef}
           className="z-10 absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
         >
           <div className="py-1" role="menu">
-            {/* Profile Section */}
             <div className="px-4 py-2 border-b border-gray-100">
-              <p className="text-sm font-medium text-gray-900">John Doe</p>
-              <p className="text-sm text-gray-500">john@example.com</p>
+              <p className="text-sm font-medium text-gray-900">
+                {user.username || ""}
+              </p>
+              <p className="text-sm text-gray-500">{user.email || ""}</p>
             </div>
 
-            {/* Menu Items */}
             <a
               href="#profile"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
