@@ -25,7 +25,7 @@ const registerUser = async (req, res) => {
     });
 
     if (userExists) {
-      res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const user = await User.create({
@@ -35,9 +35,9 @@ const registerUser = async (req, res) => {
     });
 
     if (user) {
-      res.status(201).json({ message: "User registerd successfully." });
+      return res.status(201).json({ message: "User registerd successfully." });
     } else {
-      res.status(400).json({ message: "Something went wrong" });
+      return res.status(400).json({ message: "Something went wrong" });
     }
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });

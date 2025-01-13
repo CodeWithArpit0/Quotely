@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 // * Components
 import InputField from "../../components/UI/InputFields/TextInputField/InputField";
+import Loader from "../../components/UI/Loader/Loader";
 
 // * Icons
 import { AtSign } from "lucide-react";
@@ -257,12 +258,16 @@ export default function Register() {
 
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                 <button
-                  className="inline-block w-full sm:w-auto shrink-0 rounded-md border border-primary bg-primary px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primary focus:outline-none focus:ring active:text-primary"
+                  className="flex justify-center w-full sm:w-auto shrink-0 rounded-md border border-primary bg-primary px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primary focus:outline-none focus:ring active:text-primary"
                   type="submit"
                   disabled={error.error}
                   tabIndex={6}
                 >
-                  Create an account
+                  {registerUserAPI.isPending ? (
+                    <Loader theme="light" size="small" />
+                  ) : (
+                    "Create an account"
+                  )}
                 </button>
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
