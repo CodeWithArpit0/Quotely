@@ -74,6 +74,19 @@ npm install
 
 #### 1. Start the Backend Server
 
+Replace the origin URL in CORS options to local URL in the backend server:
+Open `server.js` and replace:
+
+```javascript
+origin: "https://quotely-one.vercel.app";
+```
+
+with:
+
+```javascript
+origin: "http://localhost:5173";
+```
+
 ```bash
 cd backend
 npm run start
@@ -180,7 +193,3 @@ root
 ## License
 
 This project is licensed under the ISC License.
-
-## Contact
-
-For any questions or feedback, feel free to contact [Your Name] at [Your Email].
