@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: 60 * 60 * 1000, // 1 hour,
+    expiresIn: "1h",
   });
 };
 
@@ -69,10 +69,11 @@ const loginUser = async (req, res) => {
     } else {
       const accessToken = generateToken(user._id);
       res.cookie("accessToken", accessToken, {
-        httpOnly: true, 
+        httpOnly: true,
         secure: true,
         sameSite: "strict",
         maxAge: 60 * 60 * 1000,
+        domain: ".quotely-one.vercel.app",
       });
 
       res.status(200).json({
@@ -87,12 +88,12 @@ const loginUser = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('accessToken', {
-    httpOnly: true, 
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
   });
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 const getUserProfile = async (req, res) => {
