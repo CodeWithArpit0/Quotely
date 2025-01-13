@@ -77,8 +77,8 @@ export default function NoteModel({ note, onChange, onClose, onBlur }) {
           />
         </div>
 
-        <div className="flex items-center justify-between p-2 border-t">
-          <div className="flex items-center space-x-2">
+        <div className="p-4 flex flex-col gap-y-3 sm:gap-0 grow sm:flex-row items-center sm:justify-between mt-2">
+          <div className="w-full flex items-center space-x-2">
             <button className="p-2 hover:bg-gray-100 rounded-full">
               <Bell className="w-5 h-5 text-gray-600" />
             </button>
@@ -105,7 +105,7 @@ export default function NoteModel({ note, onChange, onClose, onBlur }) {
             </button>
           </div>
 
-          <div className="space-x-2">
+          <div className="w-full flex justify-end space-x-2">
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded"

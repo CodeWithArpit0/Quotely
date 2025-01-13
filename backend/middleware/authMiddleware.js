@@ -3,10 +3,8 @@ const User = require("../models/userModel"); // Adjust the path as needed
 
 const authenticate = async (req, res, next) => {
   try {
-    console.log("AUTHENICATING USER...");
     // * Get token from HttpOnly cookie
     const token = req.cookies.accessToken;
-    console.log("ACCESS TOKEN : ", token);
     if (!token) return res.status(401).json({ message: "Not authorized" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

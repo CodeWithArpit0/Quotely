@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+
 import { Link, useNavigate } from "react-router-dom";
 import { AtSign } from "lucide-react";
 
@@ -47,6 +49,8 @@ export default function Login() {
     onError: (error) => handleLoginError(error),
   });
   const handleLoginSuccess = (data) => {
+    toast.success(data.message);
+
     setIsLoggedIn(true);
     setItem("isLoggedIn", true);
     const user = {
@@ -57,6 +61,11 @@ export default function Login() {
   };
   const handleLoginError = (error) => {
     console.log("ERROR : ", error);
+    if (error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Something went wrong, please try again.");
+    }
   };
   const loginUser = () => loginUserAPI.mutate(state);
 
@@ -130,7 +139,7 @@ export default function Login() {
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Sign in to your account
+          Login to your account
         </h2>
       </div>
 

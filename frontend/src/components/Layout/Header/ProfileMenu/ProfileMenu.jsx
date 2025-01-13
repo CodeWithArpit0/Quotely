@@ -15,11 +15,12 @@ import { logout } from "../../../../api/services/auth";
 
 // * Utilities
 import { removeItem } from "../../../../utils/localStorage";
+import toast from "react-hot-toast";
 
 export default function ProfileMenu() {
   const navigate = useNavigate();
 
-  const { setIsLoggedIn, user } = useAuth();
+  const { setIsLoggedIn, setUser, user } = useAuth();
   const menuRef = useRef();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,13 +46,21 @@ export default function ProfileMenu() {
     onError: (error) => handleLogoutError(error),
   });
   const handleLogoutSuccess = () => {
+    toast.success("Logout Successfully");
     navigate("/");
     document.cookie = "accessToken =; Max-Age=0";
     setIsLoggedIn(false);
+    setUser(null);
     removeItem("isLoggedIn");
+    removeItem("user");
   };
   const handleLogoutError = (error) => {
     console.log("ERROR : ", error);
+    if (error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Something went wrong, please try again.");
+    }
   };
   const handleLogout = () => logoutUserAPI.mutate();
 

@@ -68,7 +68,6 @@ const loginUser = async (req, res) => {
       });
     } else {
       const accessToken = generateToken(user._id);
-      console.log("ASSIGNING ACCESS TOKEN : ", accessToken);
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,

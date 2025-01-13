@@ -19,6 +19,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../../api/services/auth";
 import { useAuth } from "../../context/authContext";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -49,11 +50,20 @@ export default function Register() {
 
   const registerUserAPI = useMutation({
     mutationFn: (payload) => register(payload),
-    onSuccess: () => navigate("/login"),
+    onSuccess: (data) => handleRegisterSuccess(data),
     onError: (error) => handleRegisterError(error),
   });
+  const handleRegisterSuccess = (data) => {
+    navigate("/login");
+    toast.success(data.message);
+  };
   const handleRegisterError = (error) => {
     console.log("ERROR : ", error);
+    if (error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Something went wrong, please try again.");
+    }
   };
   const registerUser = () => {
     console.log("Registering User");
