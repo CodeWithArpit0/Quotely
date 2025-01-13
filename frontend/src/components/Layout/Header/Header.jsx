@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import NotesSearch from "./Search/Search";
 import ProfileMenu from "./ProfileMenu/ProfileMenu";
 
-export default function Header() {
+export default function Header({ search, setSearch }) {
   return (
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col gap-y-4 md:flex-row md:justify-between items-center">
@@ -38,7 +38,7 @@ export default function Header() {
         </div>
 
         <div className="hidden flex-[2_2_0%] md:block ">
-          <NotesSearch />
+          <NotesSearch search={search} setSearch={setSearch} />
         </div>
 
         <div className="hidden flex-1 sm:flex justify-end">
@@ -46,7 +46,7 @@ export default function Header() {
         </div>
 
         <div className="flex-1 w-full md:hidden">
-          <NotesSearch />
+          <NotesSearch search={search} setSearch={setSearch} />
         </div>
       </div>
     </header>
