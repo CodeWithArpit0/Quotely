@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { Link, useNavigate } from "react-router-dom";
-import { AtSign } from "lucide-react";
 
 // * Components
 import InputField from "../../components/UI/InputFields/TextInputField/InputField";
@@ -10,31 +9,26 @@ import Loader from "../../components/UI/Loader/Loader";
 
 // * APIs and API Handler
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../../api/services/auth";
+import { changePassword } from "../../api/services/profile";
 
-//  * Utilities
-import { validateEmail, validatePassword } from "../../utils/validators";
-import { setItem } from "../../utils/localStorage";
-
-// * Contexts
+// * Helpers
+import { validatePassword } from "../../utils/validators";
 import { useAuth } from "../../context/authContext";
 
-export default function Login() {
+export default function ChangePassword() {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn, setUser } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/notes");
-    }
-  }, [isLoggedIn, navigate]);
+    if (!user) navigate("/login");
+  }, [user]);
 
   const initialState = {
-    email: "",
-    password: "",
+    currentPassword: "",
+    newPassword: "",
   };
   const [state, setState] = useState(initialState);
-  const { email, password } = state;
+  const { currentPassword, newPassword } = state;
 
   const initialErrorState = {
     error: false,
@@ -43,33 +37,22 @@ export default function Login() {
   };
   const [error, setError] = useState(initialErrorState);
 
-  const loginUserAPI = useMutation({
-    mutationFn: (payload) => login(payload),
-    onSuccess: (data) => handleLoginSuccess(data),
-    onError: (error) => handleLoginError(error),
+  const updatePasswordAPI = useMutation({
+    mutationFn: (payload) => changePassword(payload),
+    onSuccess: (data) => handleUpdatePasswordSuccess(data),
+    onError: (error) => handleUpdatePasswordError(error),
   });
-  const handleLoginSuccess = (data) => {
+  const handleUpdatePasswordSuccess = (data) => {
     toast.success(data.message);
-
-    setItem("isLoggedIn", true);
-    const user = {
-      username: data.username,
-      email: data.email,
-    };
-    setItem("user", user);
-
-    setIsLoggedIn(true);
-    setUser(user);
+    navigate("/notes");
   };
-  const handleLoginError = (error) => {
+  const handleUpdatePasswordError = (error) => {
     if (error.response.data.message) {
       toast.error(error.response.data.message);
     } else {
       toast.error("Something went wrong, please try again.");
     }
   };
-  const loginUser = () => loginUserAPI.mutate(state);
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -87,8 +70,9 @@ export default function Login() {
       }
     }
 
-    if (!hasError) loginUser();
+    if (!hasError) updatePasswordAPI.mutate({ currentPassword, newPassword });
   };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setState((prev) => ({ ...prev, [name]: value }));
@@ -109,10 +93,7 @@ export default function Login() {
     let isValid = false;
 
     switch (name) {
-      case "email":
-        isValid = validateEmail(value);
-        break;
-      case "password":
+      case "newPassword":
         isValid = validatePassword(value);
         break;
     }
@@ -124,7 +105,7 @@ export default function Login() {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Link to="/" className="block text-primary">
+          <Link className="block text-primary" to="/">
             <span className="sr-only">Home</span>
             <svg
               className="h-8 sm:h-10"
@@ -140,78 +121,54 @@ export default function Login() {
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900">
-          Login to your account
+          Change Password
         </h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white py-8 px-4 shadow rounded-lg sm:rounded-lg sm:px-10">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <InputField
-                label="Email"
-                id="email"
-                type="email"
-                name="email"
-                placeholder="arpit@quotely.com"
-                tabIndex={1}
-                value={email}
-                icon={<AtSign size={18} />}
-                handler={handleChange}
-                errorType="email"
-                error={error}
-              />
-            </div>
-
-            <div>
-              <InputField
-                label="Password"
-                id="password"
-                type="password"
-                name="password"
-                tabIndex={2}
-                value={password}
-                handler={handleChange}
-                errorType="password"
-                error={error}
-              />
-            </div>
-
-            <div className="space-y-4">
-              <button
-                tabIndex={3}
-                type="submit"
-                disabled={error.error || loginUserAPI.isPending}
-                className="w-full flex justify-center rounded-md border border-primary bg-primary px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-primary focus:outline-none focus:ring active:text-blue-500"
-              >
-                {loginUserAPI.isPending ? (
-                  <Loader theme="light" size="small" />
-                ) : (
-                  "Login"
-                )}
-              </button>
-              <p className="text-center text-sm text-gray-500 sm:mt-0">
-                Don't have an account?{" "}
-                <Link
-                  tabIndex={4}
-                  to="/register"
-                  className="text-primary underline"
-                >
-                  Register
-                </Link>
-              </p>
-            </div>
-
-            <div className="flex items-center justify-center">
-              <div className="text-sm leading-5">
-                <Link
-                  tabIndex={5}
-                  to="/forgotPassword"
-                  className="font-medium text-primary hover:text-primary focus:outline-none focus:underline transition ease-in-out duration-150"
-                >
-                  Forgot your password?
-                </Link>
+            <div className="space-y-6">
+              <div>
+                <InputField
+                  type="password"
+                  label="Current Password"
+                  id="currentPassword"
+                  name="currentPassword"
+                  tabIndex={1}
+                  value={currentPassword}
+                  handler={handleChange}
+                  error={error}
+                  errorType="currentPassword"
+                />
               </div>
+              <div>
+                <InputField
+                  type="text"
+                  label="New Password"
+                  id="newPassword"
+                  name="newPassword"
+                  tabIndex={2}
+                  value={newPassword}
+                  handler={handleChange}
+                  error={error}
+                  errorType="confirmPassword"
+                />
+              </div>
+
+              <span className="block w-full rounded-md shadow-sm">
+                <button
+                  type="submit"
+                  tabIndex={3}
+                  className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                >
+                  {updatePasswordAPI.isPending ? (
+                    <Loader theme="light" size="small" />
+                  ) : (
+                    "Change Password"
+                  )}
+                </button>
+              </span>
             </div>
           </form>
         </div>

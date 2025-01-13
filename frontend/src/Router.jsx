@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // * Pages
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
-import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 import NotFound from "./pages/NotFound/NotFound";
 import Notes from "./pages/Notes/Notes";
 import Home from "./pages/Home/Home";
@@ -27,8 +27,8 @@ function Router() {
       element: <Register />,
     },
     {
-      path: "/forgotPassword",
-      element: <ForgotPassword />,
+      path: "/changePassword",
+      element: <ChangePassword />,
     },
     {
       path: "*",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-import { User, Settings, LogOut, HelpCircle } from "lucide-react";
+import { User, Settings, LogOut, HelpCircle, KeyRound } from "lucide-react";
 
 // * Components
 import Avatar from "../../../UI/Avatar/Avatar";
@@ -116,6 +116,14 @@ export default function ProfileMenu() {
               <HelpCircle className="mr-3 h-4 w-4" />
               Help & Support
             </a>
+            <Link
+              to="/changePassword"
+              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+            >
+              <KeyRound className="mr-3 h-4 w-4" />
+              Change Password
+            </Link>
 
             <div className="border-t border-gray-100">
               <button

@@ -130,9 +130,27 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(403).json({ message: "User not found." });
+
+    res.status(200).json({
+      message: "User found",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
+    if (!currentPassword)
+      return res.status(401).json({ message: "Current password is required" });
+    if (!newPassword)
+      return res.status(401).json({ message: "New password is required" });
 
     const user = await User.findById(req.user.id);
 
@@ -171,4 +189,5 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   changePassword,
+  getUserByEmail,
 };

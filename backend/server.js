@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -41,10 +40,8 @@ io.on("connection", (socket) => {
   });
 });
 
-// Make io accessible to our routes
 app.set("io", io);
 
-// Routes
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/notes", require("./routes/noteRoutes"));
 
