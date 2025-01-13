@@ -1,9 +1,16 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Menu } from "lucide-react";
+
 import { useAuth } from "../../context/authContext";
+
 import ProfileMenu from "../../components/Layout/Header/ProfileMenu/ProfileMenu";
+import MobileMenu from "../../components/Home/MobileMenu/MobileMenu";
 
 export default function Home() {
   const { isLoggedIn } = useAuth();
+  const [open, setMenu] = useState(false);
+  const toggleMenu = () => setMenu((prev) => !prev);
 
   return (
     <>
@@ -55,7 +62,7 @@ export default function Home() {
               </a>
             </nav>
 
-            <div className="space-x-3">
+            <div className="hidden lg:block space-x-3">
               {isLoggedIn ? (
                 <ProfileMenu />
               ) : (
@@ -76,24 +83,17 @@ export default function Home() {
               )}
             </div>
 
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-lg bg-gray-200 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:hidden"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+            <div className="relative inline-block lg:hidden">
+              <button
+                type="button"
+                onClick={toggleMenu}
+                className="inline-flex items-center gap-2 rounded-lg bg-indigo-100 px-2.5 py-2 text-sm font-semibold text-gray-500 ring-indigo-300 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base lg:hidden"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Menu
-            </button>
+                <Menu className="text-primary" />
+              </button>
+
+              {open && <MobileMenu toggleMenu={toggleMenu} />}
+            </div>
           </header>
 
           <section className="min-h-96 relative flex flex-1 shrink-0 items-center justify-center overflow-hidden rounded-3xl bg-gray-100 py-16 shadow-lg md:py-20 xl:py-48">

@@ -81,16 +81,16 @@ export default function Notes() {
             <TakeNote />
           </div>
 
-          <div className="p-4 relative">
+          <div className="sm:p-4 relative">
             {/* Masonry Grid */}
             <div
               style={{
-                columnCount: 4,
+                // columnCount: 4,
                 columnGap: "1rem",
-                maxWidth: "1200px",
-                margin: "0 auto",
+                // maxWidth: "1200px",
+                // margin: "0 auto",
               }}
-              className="w-full sm:columns-2 md:columns-3 lg:columns-4"
+              className="w-full max-w-[1200px] mx-auto sm:columns-2 md:columns-3 lg:columns-4"
             >
               {notes.map((note) => (
                 <Note key={note._id} note={note} handler={handleNoteClick} />

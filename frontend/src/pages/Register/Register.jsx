@@ -194,7 +194,7 @@ export default function Register() {
                   id="email"
                   name="email"
                   type="text"
-                  placeholder="arpit@zollage.com"
+                  placeholder="arpit@quotely.com"
                   icon={<AtSign size={18} />}
                   value={email}
                   handler={handleChange}

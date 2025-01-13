@@ -138,7 +138,7 @@ export default function Login() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="arpit@zollage.com"
+                placeholder="arpit@quotely.com"
                 tabIndex={1}
                 value={email}
                 icon={<AtSign size={18} />}

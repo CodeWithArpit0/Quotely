@@ -204,8 +204,8 @@ const TakeNote = () => {
             />
 
             {/* Action buttons */}
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center space-x-2">
+            <div className="flex flex-col gap-y-3 sm:gap-0 grow sm:flex-row items-center sm:justify-between mt-2">
+              <div className="w-full flex items-center space-x-2">
                 <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
                   <Bell size={18} />
                 </button>
@@ -232,7 +232,7 @@ const TakeNote = () => {
                 </button>
               </div>
 
-              <div className="space-x-2">
+              <div className="w-full flex justify-end space-x-2">
                 <button
                   onClick={resetAndClose}
                   className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded transition-colors"
